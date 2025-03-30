@@ -1,12 +1,15 @@
 import pandas as pd
 import numpy as np
+import os
 from sklearn.model_selection import train_test_split
 from starter.ml.data import process_data
 from starter.ml.model import train_model, compute_model_metrics, inference
 
 
 def test_process_data():
-    df = pd.read_csv("data/census.csv")
+    # Construct path to data file that works regardless of where test is run from
+    data_path = os.path.join(os.path.dirname(__file__), "data", "census.csv")
+    df = pd.read_csv(data_path)
     # Clean column names (strip whitespace)
     df.columns = df.columns.str.strip()
     train, _ = train_test_split(df, test_size=0.2, random_state=42)
