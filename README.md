@@ -1,5 +1,29 @@
 Working in a command line environment is recommended for ease of use with git and dvc. If on Windows, WSL1 or 2 is recommended.
 
+# Git Submodule Setup
+
+This repository is currently set up as a Git submodule within a parent repository. The submodule is correctly configured to point to the GitHub repository at:
+```
+https://github.com/krillavilla/Deploying_MLmodel_CloudApp_using_FastAPI
+```
+
+Note: There appears to be another submodule in the parent repository named "ML_Model_FastAPI_Deployment" that points to the same GitHub repository. To avoid confusion, you may want to remove one of these submodules from the parent repository.
+
+To remove the duplicate submodule, you can run the following commands from the parent directory:
+```bash
+# Remove the submodule entry from .git/config
+git submodule deinit -f ML_Model_FastAPI_Deployment
+
+# Remove the submodule directory from the git index
+git rm -f ML_Model_FastAPI_Deployment
+
+# Remove the submodule directory
+rm -rf .git/modules/ML_Model_FastAPI_Deployment
+
+# Commit the changes
+git commit -m "Remove duplicate submodule"
+```
+
 # Environment Set up
 * Download and install conda if you don’t have it already.
     * Use the supplied requirements file to create a new environment, or
