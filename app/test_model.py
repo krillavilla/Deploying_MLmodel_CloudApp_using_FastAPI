@@ -4,6 +4,7 @@ from sklearn.model_selection import train_test_split
 from starter.ml.data import process_data
 from starter.ml.model import train_model, compute_model_metrics, inference
 
+
 def test_process_data():
     df = pd.read_csv("data/census.csv")
     # Clean column names (strip whitespace)

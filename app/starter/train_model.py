@@ -82,10 +82,12 @@ def main():
     # Evaluate the model
     preds = inference(model, X_test)
     precision, recall, fbeta = compute_model_metrics(y_test, preds)
-    print(f"Overall test performance - Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {fbeta:.4f}")
+    print(f"Overall test performance - Precision: {precision:.4f}, "
+          f"Recall: {recall:.4f}, F1: {fbeta:.4f}")
 
     # Compute slice-based metrics (example on 'education')
-    slice_results = compute_slice_metrics(test, "education", model, encoder, lb, cat_features)
+    slice_results = compute_slice_metrics(
+        test, "education", model, encoder, lb, cat_features)
     with open("slice_output.txt", "w") as f:
         for line in slice_results:
             f.write(line + "\n")
@@ -98,7 +100,8 @@ def main():
     with open("lb.pkl", "wb") as f:
         pickle.dump(lb, f)
 
-    print("Training complete. Model artifacts saved, slice metrics written to slice_output.txt.")
+    print("Training complete. Model artifacts saved, "
+          "slice metrics written to slice_output.txt.")
 
 
 if __name__ == "__main__":
