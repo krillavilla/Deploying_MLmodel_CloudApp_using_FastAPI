@@ -14,8 +14,24 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
 # Adjust if your files are in a different path
-from starter.ml.data import process_data
-from starter.ml.model import inference
+try:
+    # Try importing from starter package first
+    from starter.ml.data import process_data
+    from starter.ml.model import inference
+    print("Successfully imported from starter package")
+except ImportError:
+    try:
+        # Try importing from ml package directly (if starter is not in Python path)
+        from ml.data import process_data
+        from ml.model import inference
+        print("Successfully imported from ml package")
+    except ImportError:
+        # If all else fails, try adjusting the Python path
+        import sys
+        sys.path.append("starter")
+        from ml.data import process_data
+        from ml.model import inference
+        print("Successfully imported after adjusting Python path")
 
 # Create the FastAPI application
 app = FastAPI(
@@ -25,12 +41,31 @@ app = FastAPI(
 )
 
 # Load artifacts (model, encoder, lb) from disk
-with open("starter/model.pkl", "rb") as f:
-    model = pickle.load(f)
-with open("starter/encoder.pkl", "rb") as f:
-    encoder = pickle.load(f)
-with open("starter/lb.pkl", "rb") as f:
-    lb = pickle.load(f)
+# Use os.path to handle different working directory scenarios
+import os
+
+# Define possible paths for model artifacts
+model_paths = ["starter/model.pkl", "app/starter/model.pkl", "../starter/model.pkl"]
+encoder_paths = ["starter/encoder.pkl", "app/starter/encoder.pkl", "../starter/encoder.pkl"]
+lb_paths = ["starter/lb.pkl", "app/starter/lb.pkl", "../starter/lb.pkl"]
+
+# Try to load model from different possible paths
+for model_path in model_paths:
+    try:
+        with open(model_path, "rb") as f:
+            model = pickle.load(f)
+            print(f"Successfully loaded model from {model_path}")
+            # If we found the model, use the same directory for other artifacts
+            base_path = os.path.dirname(model_path)
+            with open(os.path.join(base_path, "encoder.pkl"), "rb") as f:
+                encoder = pickle.load(f)
+            with open(os.path.join(base_path, "lb.pkl"), "rb") as f:
+                lb = pickle.load(f)
+            break
+    except FileNotFoundError:
+        print(f"Could not find model at {model_path}")
+        if model_path == model_paths[-1]:
+            raise FileNotFoundError(f"Could not find model at any of these paths: {model_paths}")
 
 # The same categorical features used in training
 cat_features = [
