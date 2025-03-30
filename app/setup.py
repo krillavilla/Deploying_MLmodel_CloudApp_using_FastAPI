@@ -5,4 +5,6 @@ setuptools.setup(
     version="0.0.0",
     description="Starter code.",
     author="Student",
+    install_requires=[],  # No dependencies required for setup
+    python_requires=">=3.8",
 )

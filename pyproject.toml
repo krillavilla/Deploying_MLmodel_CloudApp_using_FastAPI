@@ -1,0 +1,10 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = []
+
+[tool.meson-python]
+# Disable building from source for packages that use meson-python (like SciPy)
+force-optimize = false
