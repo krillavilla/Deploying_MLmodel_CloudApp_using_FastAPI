@@ -108,9 +108,10 @@ staticfiles/
 app/INSTRUCTIONS.md
 
 # Placeholder screenshot files (until they're populated with actual screenshots)
-screenshots/continuous_integration.png
-screenshots/continuous_deployment.png
-screenshots/example.png
-screenshots/live_get.png
-screenshots/live_post.png
-screenshots/README.md
+# Uncomment these lines if you want to ignore specific screenshot files
+# screenshots/continuous_integration.png
+# screenshots/continuous_deployment.png
+# screenshots/example.png
+# screenshots/live_get.png
+# screenshots/live_post.png
+# screenshots/README.md
