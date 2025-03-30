@@ -7,7 +7,7 @@ from starter.ml.model import train_model, compute_model_metrics, inference
 
 
 def test_process_data():
-    # Construct path to data file that works regardless of where test is run from
+    # Construct path to data file that works regardless of test location
     data_path = os.path.join(os.path.dirname(__file__), "data", "census.csv")
     df = pd.read_csv(data_path)
     # Clean column names (strip whitespace)
