@@ -35,8 +35,11 @@ The dataset contains census data with features such as:
 
 ## Metrics
 - Precision, Recall, F1 score are used to evaluate the model.
-- Performance metrics will be updated after model training.
-- Slice-based metrics are computed for categorical features to assess model fairness.
+- Overall model performance on the test set:
+  - Precision: 0.7962
+  - Recall: 0.5372
+  - F1 Score: 0.6416
+- Slice-based metrics are computed for categorical features to assess model fairness. See slice_output.txt for detailed metrics on the "education" feature.
 
 ## Limitations
 - The model is trained on census data from the 1990s, which may not reflect current demographic distributions.

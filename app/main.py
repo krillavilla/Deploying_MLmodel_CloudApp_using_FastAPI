@@ -1,19 +1,11 @@
 import os
-
-# If on Heroku (DYNO env variable) or Render.com (RENDER env variable) and there's a .dvc folder, pull data.
-# This snippet is adapted from dvc_on_heroku_instructions.md
-if ("DYNO" in os.environ or "RENDER" in os.environ) and os.path.isdir(".dvc"):
-    os.system("dvc config core.no_scm true")
-    if os.system("dvc pull") != 0:
-        exit("dvc pull failed")
-    os.system("rm -r .dvc .apt/usr/lib/dvc")
-
+import sys
 import pickle
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-# Adjust if your files are in a different path
+# Try different import paths for the ML modules
 try:
     # Try importing from starter package first
     from starter.ml.data import process_data
@@ -21,33 +13,54 @@ try:
     print("Successfully imported from starter package")
 except ImportError:
     try:
-        # Try importing from ml package directly (if starter is not in Python path)
+        # Try importing from ml package directly
+        # (if starter is not in Python path)
         from ml.data import process_data
         from ml.model import inference
         print("Successfully imported from ml package")
     except ImportError:
         # If all else fails, try adjusting the Python path
-        import sys
         sys.path.append("starter")
         from ml.data import process_data
         from ml.model import inference
         print("Successfully imported after adjusting Python path")
 
+# If on Heroku (DYNO env variable) or Render.com (RENDER env variable)
+# and there's a .dvc
+# folder,
+# pull data. This snippet is adapted from dvc_on_heroku_instructions.md
+if ("DYNO" in os.environ or "RENDER" in os.environ) and os.path.isdir(".dvc"):
+    os.system("dvc config core.no_scm true")
+    if os.system("dvc pull") != 0:
+        exit("dvc pull failed")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
+
 # Create the FastAPI application
 app = FastAPI(
     title="Census Income Prediction API",
-    description="Predicts whether income is <=50K or >50K based on Census data.",
+    description="Predicts income: <=50K or >50K based on Census data.",
     version="1.0.0",
 )
 
 # Load artifacts (model, encoder, lb) from disk
 # Use os.path to handle different working directory scenarios
-import os
 
 # Define possible paths for model artifacts
-model_paths = ["starter/model.pkl", "app/starter/model.pkl", "../starter/model.pkl"]
-encoder_paths = ["starter/encoder.pkl", "app/starter/encoder.pkl", "../starter/encoder.pkl"]
-lb_paths = ["starter/lb.pkl", "app/starter/lb.pkl", "../starter/lb.pkl"]
+model_paths = [
+    "starter/model.pkl",
+    "app/starter/model.pkl",
+    "../starter/model.pkl"
+]
+encoder_paths = [
+    "starter/encoder.pkl",
+    "app/starter/encoder.pkl",
+    "../starter/encoder.pkl"
+]
+lb_paths = [
+    "starter/lb.pkl",
+    "app/starter/lb.pkl",
+    "../starter/lb.pkl"
+]
 
 # Try to load model from different possible paths
 for model_path in model_paths:
@@ -65,7 +78,9 @@ for model_path in model_paths:
     except FileNotFoundError:
         print(f"Could not find model at {model_path}")
         if model_path == model_paths[-1]:
-            raise FileNotFoundError(f"Could not find model at any of these paths: {model_paths}")
+            error_msg = (f"Could not find model at any of these paths: "
+                         f"{model_paths}")
+            raise FileNotFoundError(error_msg)
 
 # The same categorical features used in training
 cat_features = [
@@ -78,6 +93,7 @@ cat_features = [
     "sex",
     "native-country",
 ]
+
 
 class CensusData(BaseModel):
     age: int
@@ -115,12 +131,27 @@ class CensusData(BaseModel):
             }
         }
 
+
 @app.get("/")
 def read_root():
     """
     A simple GET endpoint returning a welcome message.
     """
     return {"greeting": "Welcome to the Census Income Prediction API!"}
+
+
+@app.get("/predict")
+def predict_get():
+    """
+    GET endpoint for the predict route that provides usage instructions.
+    """
+    return {
+        "message": "This endpoint requires a POST request with census data.",
+        "usage": ("Please make a POST request to this endpoint "
+                  "with the required data fields."),
+        "example": CensusData.Config.schema_extra["example"]
+    }
+
 
 @app.post("/predict")
 def predict(data: CensusData):

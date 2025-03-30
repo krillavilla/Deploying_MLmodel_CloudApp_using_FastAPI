@@ -49,3 +49,15 @@ def test_post_predict_less_than_equal_50k():
     r = client.post("/predict", json=sample)
     assert r.status_code == 200
     assert r.json()["prediction"] in [">50K", "<=50K"]
+
+
+def test_get_predict():
+    """
+    Test the GET method on the /predict endpoint.
+    This should return usage instructions rather than a prediction.
+    """
+    r = client.get("/predict")
+    assert r.status_code == 200
+    assert "message" in r.json()
+    assert "usage" in r.json()
+    assert "example" in r.json()
