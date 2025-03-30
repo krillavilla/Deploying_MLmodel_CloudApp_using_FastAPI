@@ -94,6 +94,8 @@ staticfiles/
 *.xls
 *.db
 *.sqlite3
+# Exception for data files needed for testing
+!app/data/census.csv
 
 # Environment variables
 .env
