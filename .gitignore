@@ -79,6 +79,11 @@ coverage.xml
 staticfiles/
 
 # Model files
+# Exception for model files needed for production
+!app/starter/model.pkl
+!app/starter/encoder.pkl
+!app/starter/lb.pkl
+# Other model files
 *.pkl
 *.joblib
 *.h5
@@ -96,3 +101,6 @@ staticfiles/
 
 # AWS
 .aws/
+
+# Specific files to ignore
+app/INSTRUCTIONS.md
