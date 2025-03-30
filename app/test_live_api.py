@@ -1,9 +1,9 @@
 import requests
-import json
 
 # URL of the deployed API
 # Replace this with the actual URL of your deployed API
-# For Render.com, the URL will be something like: https://your-app-name.onrender.com
+# For Render.com, the URL will be something like:
+# https://your-app-name.onrender.com
 API_URL = "https://census-income-predictor.onrender.com"
 
 # Sample data for prediction
@@ -31,6 +31,7 @@ def test_get_root():
     print("GET Root Response Body:", response.json())
     return response.status_code == 200
 
+
 # Test the GET endpoint on predict
 def test_get_predict():
     response = requests.get(f"{API_URL}/predict")
@@ -38,12 +39,14 @@ def test_get_predict():
     print("GET Predict Response Body:", response.json())
     return response.status_code == 200 and "message" in response.json()
 
+
 # Test the POST endpoint
 def test_post():
     response = requests.post(f"{API_URL}/predict", json=sample_data)
     print("POST Response Status Code:", response.status_code)
     print("POST Response Body:", response.json())
     return response.status_code == 200
+
 
 if __name__ == "__main__":
     print("Testing the deployed API...")

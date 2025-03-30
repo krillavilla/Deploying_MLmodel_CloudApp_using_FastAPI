@@ -8,6 +8,7 @@ def test_get_root():
     assert r.status_code == 200
     assert "Welcome" in r.json()["greeting"]
 
+
 def test_post_predict_greater_than_50k():
     sample = {
         "age": 42,
@@ -28,6 +29,7 @@ def test_post_predict_greater_than_50k():
     r = client.post("/predict", json=sample)
     assert r.status_code == 200
     assert r.json()["prediction"] in [">50K", "<=50K"]
+
 
 def test_post_predict_less_than_equal_50k():
     sample = {

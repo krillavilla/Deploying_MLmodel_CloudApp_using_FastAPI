@@ -1,4 +1,3 @@
-import pytest
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -12,19 +11,23 @@ def test_process_data():
     train, _ = train_test_split(df, test_size=0.2, random_state=42)
     X_train, y_train, encoder, lb = process_data(
         train,
-        categorical_features=["workclass", "education", "marital-status", "occupation",
-                              "relationship", "race", "sex", "native-country"],
+        categorical_features=[
+            "workclass", "education", "marital-status", "occupation",
+            "relationship", "race", "sex", "native-country"
+        ],
         label="salary",
         training=True
     )
     assert X_train.shape[0] == y_train.shape[0]
     assert X_train.shape[0] > 0
 
+
 def test_train_model():
     X = np.array([[0, 1], [1, 1], [1, 0]])
     y = np.array([0, 1, 1])
     model = train_model(X, y)
     assert model is not None
+
 
 def test_compute_model_metrics():
     y = np.array([0, 1, 1])
@@ -33,6 +36,7 @@ def test_compute_model_metrics():
     assert precision is not None
     assert recall is not None
     assert fbeta is not None
+
 
 def test_inference():
     X = np.array([[0, 1], [1, 1]])

@@ -10,7 +10,7 @@ from ml.model import train_model, compute_model_metrics, inference
 
 def compute_slice_metrics(df, feature, model, encoder, lb, cat_features):
     """
-    Compute performance metrics on slices of data for the given categorical feature.
+    Compute performance metrics on slices of data for a categorical feature.
     Saves or returns them in a list so you can write them out to a file.
 
     df: the dataset (including label column).
