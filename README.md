@@ -35,6 +35,16 @@ Working in a command line environment is recommended for ease of use with git an
 * Write 3 unit tests to test the API (one for the GET and two for POST, one that tests each prediction).
 
 # API Deployment
+
+## Render.com Deployment
+* Create a free Render.com account at https://render.com/
+* Use the provided `render.yaml` file to define your web service.
+* Connect your GitHub repository to Render.com using the Blueprint feature.
+* Render will automatically detect the `render.yaml` file and set up the service.
+* Enable automatic deployments that only deploy if your continuous integration passes.
+* Write a script that uses the requests module to do one POST on your live API.
+
+## Heroku Deployment
 * Create a free Heroku account (for the next steps you can either use the web GUI or download the Heroku CLI).
 * Create a new app and have it deployed from your GitHub repository.
     * Enable automatic deployments that only deploy if your continuous integration passes.
