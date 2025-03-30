@@ -25,6 +25,8 @@ sample_data = {
 }
 
 # Test the GET endpoint on root
+
+
 def test_get_root():
     response = requests.get(f"{API_URL}/")
     print("GET Root Response Status Code:", response.status_code)

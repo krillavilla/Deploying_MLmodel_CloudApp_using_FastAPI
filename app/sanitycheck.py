@@ -5,6 +5,9 @@ import importlib
 import inspect
 import sys
 
+# flake8: noqa: E501
+# This script contains long lines that are difficult to break without affecting functionality
+
 FAIL_COLOR = '\033[91m'
 OK_COLOR = '\033[92m'
 WARN_COLOR = '\033[93m'
